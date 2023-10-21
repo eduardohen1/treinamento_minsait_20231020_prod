@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ehmf.AppProdutos.exception.ResourceNotFoundException;
 import br.com.ehmf.AppProdutos.model.Estoque;
 import br.com.ehmf.AppProdutos.repository.EstoqueRepository;
 import br.com.ehmf.AppProdutos.service.interfaces.EstoqueServiceInterface;
@@ -59,13 +60,16 @@ public class EstoqueService implements EstoqueServiceInterface {
 				.map(estoque -> {
 					estoque.setQuantidade(estoque.getQuantidade() + quantidade);
 					return estoqueRepository.save(estoque);
-				});
+				}).orElseThrow(() -> new ResourceNotFoundException("Estoque não encontrado no ID: " + id));
 	}
 
 	@Override
 	public Estoque delQuantidade(Long id, int quantidade) {
-		// TODO Auto-generated method stub
-		return null;
+		return estoqueRepository.findById(id)
+				.map(estoque -> {
+					estoque.setQuantidade(estoque.getQuantidade() - quantidade);
+					return estoqueRepository.save(estoque);
+				}).orElseThrow(() -> new ResourceNotFoundException("Estoque não encontrado no ID: " + id));
 	}
 
 }

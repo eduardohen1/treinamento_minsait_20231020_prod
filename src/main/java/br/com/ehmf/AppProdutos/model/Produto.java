@@ -3,19 +3,45 @@ package br.com.ehmf.AppProdutos.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "produtos")
 public class Produto {
 	
 	//atributos
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Column(nullable = false, unique = true)
 	private String codigoBarras;
+	
+	@Column(nullable = false)
+	private String nome;
+	
+	@Column(nullable = false)
 	private BigDecimal preco;
 	
 	//Construtores
 	public Produto() {}
-	public Produto(Long id, String codigoBarras, BigDecimal preco) {
+	public Produto(Long id, String codigoBarras, BigDecimal preco, String nome) {
 		this.id = id;
 		this.codigoBarras = codigoBarras;
 		this.preco = preco;
+		this.nome = nome;
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	public Long getId() {
 		return id;
